@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Modal } from "./components/Modal";
 
 export const MuySaludableAdminApp = () => {
   // Estados para los valores de los campos
@@ -8,7 +9,15 @@ export const MuySaludableAdminApp = () => {
 
   // Datos para las opciones de los campos select
   const optionsForSelect1 = ["Opción 1", "Opción 2", "Opción 3"];
-  const optionsForSelect3 = ["X", "Y", "Z"];
+  const optionsForSelect3 = [
+    { id: "Piezas", value: "Piezas" },
+    { id: "Rebanadas", value: "Rebanada(s)" },
+    { id: "Gramos", value: "Gramos" },
+    { id: "Tazas", value: "Taza(s)" },
+    { id: "Cucharadas", value: "Cucharadas" },
+    { id: "Latas", value: "Latas" },
+    { id: "Paquetes", value: "Paquetes" },
+  ];
 
   const handleButtonClick = () => {
     // Lógica a ejecutar cuando se hace clic en el botón
@@ -19,7 +28,7 @@ export const MuySaludableAdminApp = () => {
     <div className="mx-auto bg-gra">
       <h1 className="font-black text-5xl text-center md:w-1/3 mx-auto">
         Muy Saludable {""}
-        <span className="text-indigo-600">Alta de comidas </span>
+        <span className="text-green-500">Alta de comidas </span>
       </h1>
 
       <div className="w-full mt-5">
@@ -68,7 +77,7 @@ export const MuySaludableAdminApp = () => {
         <div className="w-2/12 mr-4">
           <label htmlFor="text2" className="block my-3 font-bold text-lg">Cantidad</label>
           <input
-            type="text"
+            type="number"
             id="text2"
             value={text2}
             onChange={(e) => setText2(e.target.value)}
@@ -85,9 +94,9 @@ export const MuySaludableAdminApp = () => {
             onChange={(e) => setSelect3(e.target.value)}
             className="block w-full mt-1 p-3 border rounded-md bg-white"
           >
-            {optionsForSelect3.map((option) => (
-              <option key={option} value={option}>
-                {option}
+            {optionsForSelect3.map(({id,value}) => (
+              <option key={id} value={value}>
+                {value}
               </option>
             ))}
           </select>
@@ -97,12 +106,14 @@ export const MuySaludableAdminApp = () => {
         <div className="w-2/12 flex items-end justify-center">
           <button
             onClick={handleButtonClick}
-            className="bg-blue-500 text-white p-2 rounded-md w-full"
+            className="bg-green-500 text-white p-2 rounded-md w-full"
           >
             Agregar alimento
           </button>
         </div>
       </div>
+
+      <Modal />
     </div>
   );
 }
