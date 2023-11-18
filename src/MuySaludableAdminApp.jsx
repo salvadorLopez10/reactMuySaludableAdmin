@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Modal } from "./components/Modal";
+import { ModalCrearAlimento } from "./components/ModalCrearAlimento";
 import { tiposPorcion } from "./helpers/OpcionesTipoPorcion";
 import Error from "./components/Error";
 import { ListadoAlimentos } from "./components/ListadoAlimentos";
@@ -95,12 +95,11 @@ export const MuySaludableAdminApp = () => {
     <div className="mx-auto">
       <Header />
       <div className="relative">
-
         <button
-            onClick={handleButtonClick}
-            className="absolute bg-green-900 text-white p-2 rounded-md top-0 right-0 mt-0"
+          onClick={handleButtonClick}
+          className="absolute bg-green-900 text-white p-2 rounded-md top-0 right-0 mt-0"
         >
-            Guardar
+          Guardar
         </button>
       </div>
       <div className="w-full mt-5">
@@ -210,9 +209,14 @@ export const MuySaludableAdminApp = () => {
         </div>
       </div>
 
-      <Modal />
+      <ModalCrearAlimento 
+        setAlimentos={setAlimentos} 
+        />
 
-      <ListadoAlimentos listadoAlimentos={listadoAlimentos} setListadoAlimentos={setListadoAlimentos} />
+      <ListadoAlimentos
+        listadoAlimentos={listadoAlimentos}
+        setListadoAlimentos={setListadoAlimentos}
+      />
     </div>
   );
 }
