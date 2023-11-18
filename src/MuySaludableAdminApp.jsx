@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { Modal } from "./components/Modal";
+import { tiposPorcion } from "./helpers/OpcionesTipoPorcion";
 import Error from "./components/Error";
+import { ListadoAlimentos } from "./components/ListadoAlimentos";
+import { Header } from "./components/Header";
 
 export const MuySaludableAdminApp = () => {
   // Estados para los valores de los campos
@@ -10,8 +13,11 @@ export const MuySaludableAdminApp = () => {
   const [alimento, setAlimento] = useState("");
   const [cantidad, setCantidad] = useState("");
   const [error, setError] = useState(false);
-  
   const [tipoPorcion, setTipoPorcion] = useState("");
+
+  const [objAlimento, setObjAlimento] = useState({});
+  const [listadoAlimentos, setListadoAlimentos] = useState([]);
+ 
 
   const getAlimentos = async() => {
     const url = `http://localhost:8000/api/alimentos`;
@@ -42,39 +48,52 @@ export const MuySaludableAdminApp = () => {
     getAlimentos();
 
   }, [])
-  
-  const tiposPorcion = [
-    { id: "1", value: "Piezas" },
-    { id: "2", value: "Gramos" },
-    { id: "3", value: "Rebanada(s)" },
-    { id: "4", value: "Taza(s)" },
-    { id: "5", value: "Cucharadas" },
-    { id: "6", value: "Latas" },
-    { id: "7", value: "Paquetes" },
-  ];
 
   const handleButtonClick = () => {
-    // Lógica a ejecutar cuando se hace clic en el botón
-    console.log("Botón clickeado");
-    console.log({nombreComida,tipoComida,alimento,cantidad,tipoPorcion});
 
-    if( [nombreComida,tipoComida,alimento,cantidad,tipoPorcion].includes("") ){
+    if( [alimento,cantidad,tipoPorcion].includes("") ){
         setError(true);
         return;
     }
 
+
     setError(false);
 
+    const tipoPorcionValor = searchValuePorcion(tipoPorcion, tiposPorcion);
+    const objetoAlimento= {
+        key: generarId(),
+        alimento,
+        cantidad,
+        tipoPorcion,
+        tipoPorcionValor
+    };
+
+    setListadoAlimentos([...listadoAlimentos, objetoAlimento]);
+
+    setAlimento("");
+    setCantidad("");
+    setTipoPorcion("");
+
+  };
+
+  const searchValuePorcion = (id, arreglo) =>{
+    for (let index = 0; index < arreglo.length; index++) {
+        if( arreglo[index].id == id ){
+            return arreglo[index].value;
+        }
+    }
+  }
+
+  const generarId = () => {
+    const random = Math.random().toString(36).substring(2);
+    const fecha = Date.now().toString(36);
+
+    return random + fecha;
   };
 
   return (
     <div className="mx-auto bg-gra">
-      <h1 className="font-black text-5xl text-center md:w-1/3 mx-auto">
-        Muy Saludable {""}
-        <span className="text-green-500">Alta de comidas </span>
-      </h1>
-
-      {error && <Error>Todos los campos son obligatorios</Error>}
+      <Header />
 
       <div className="w-full mt-5">
         <label className="block my-3 font-bold text-lg" htmlFor="nombre-comida">
@@ -105,6 +124,8 @@ export const MuySaludableAdminApp = () => {
           <option value="Cena">Cena</option>
         </select>
       </div>
+
+      {error && <Error>Favor de elegir alimento, cantidad y tipo</Error>}
 
       {/* Comienza sección para agregar alimentos */}
       <div className="flex mt-8 w-full">
@@ -137,6 +158,7 @@ export const MuySaludableAdminApp = () => {
           </label>
           <input
             type="number"
+            step=".5"
             id="text2"
             value={cantidad}
             onChange={(e) => setCantidad(e.target.value)}
@@ -178,6 +200,9 @@ export const MuySaludableAdminApp = () => {
       </div>
 
       <Modal />
+
+      <ListadoAlimentos listadoAlimentos={listadoAlimentos} />
+
     </div>
   );
 }

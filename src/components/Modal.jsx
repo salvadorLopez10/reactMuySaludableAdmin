@@ -6,20 +6,24 @@ export const Modal = () => {
 
   return (
     <>
-      <button
-        className="bg-cyan-500 py-200 px-6 rounded-sm text-white font-bold m-5"
-        onClick={() => setIsOpen(true)}
-      >
-        Abrir
-      </button>
+      <div className="flex mt-0 w-full">
+        <div className="w-1/3 mr-4">
+            <button
+            className="bg-green-500 p-2 rounded-md text-white my-1 w-full"
+            onClick={() => setIsOpen(true)}
+            >
+            ¿No existe el alimento? Agrégalo
+            </button>
+        </div>
+      </div>
 
       {isOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
           <div className="p-5 rounded flex flex-col justify-center items-center gap-5">
             <div className="self-end cursor-pointer">
-                <span onClick={ ()=> setIsOpen(false)}>x</span>
+              <span onClick={() => setIsOpen(false)}>x</span>
             </div>
-            <div className='font-bold text-xl' >Alta de alimento</div>
+            <div className="font-bold text-xl">Alta de alimento</div>
             <div className="w-full">
               <label
                 className="block my-0 font-bold text-lg"
