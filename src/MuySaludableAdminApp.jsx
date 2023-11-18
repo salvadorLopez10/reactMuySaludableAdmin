@@ -92,11 +92,22 @@ export const MuySaludableAdminApp = () => {
   };
 
   return (
-    <div className="mx-auto bg-gra">
+    <div className="mx-auto">
       <Header />
+      <div className="relative">
 
+        <button
+            onClick={handleButtonClick}
+            className="absolute bg-green-900 text-white p-2 rounded-md top-0 right-0 mt-0"
+        >
+            Guardar
+        </button>
+      </div>
       <div className="w-full mt-5">
-        <label className="block my-3 font-bold text-lg" htmlFor="nombre-comida">
+        <label
+          className="block my-3 mt-5 font-bold text-lg"
+          htmlFor="nombre-comida"
+        >
           Ingresa el nombre de la comida:
         </label>
         <input
@@ -201,8 +212,7 @@ export const MuySaludableAdminApp = () => {
 
       <Modal />
 
-      <ListadoAlimentos listadoAlimentos={listadoAlimentos} />
-
+      <ListadoAlimentos listadoAlimentos={listadoAlimentos} setListadoAlimentos={setListadoAlimentos} />
     </div>
   );
 }

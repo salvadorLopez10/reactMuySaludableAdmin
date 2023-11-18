@@ -1,9 +1,21 @@
 import React, { useState } from 'react'
 
-export const ListadoAlimentos = ({ listadoAlimentos }) => {
+export const ListadoAlimentos = ({ listadoAlimentos, setListadoAlimentos }) => {
 
-    const onHandleClickDelete = (e) => {
-        console.log("eelboo")
+    const onHandleClickDelete = (key) => {
+        eliminarAlimento(key);
+    }
+
+    const eliminarAlimento = (key) =>{
+        const nuevoListado = [...listadoAlimentos];
+        const indiceElemento = listadoAlimentos.findIndex((elemento) => elemento.key === key);
+
+        if (indiceElemento !== -1) {
+          nuevoListado.splice(indiceElemento, 1);
+
+          // Actualizar el estado con el nuevo arreglo
+          setListadoAlimentos(nuevoListado);
+        }
     }
 
   return (
@@ -35,7 +47,7 @@ export const ListadoAlimentos = ({ listadoAlimentos }) => {
               </label>
             </div>
             <div className="w-1/12 mr-4 cursor-pointer">
-              <span onClick={(e) => onHandleClickDelete(e)}>
+              <span onClick={(e) => onHandleClickDelete(key)}>
                 <svg
                   className="h-8 w-8 text-red-500"
                   viewBox="0 0 24 24"

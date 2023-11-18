@@ -8,12 +8,14 @@ export const Modal = () => {
     <>
       <div className="flex mt-0 w-full">
         <div className="w-1/3 mr-4">
+          <div className="text-center">
             <button
-            className="bg-green-500 p-2 rounded-md text-white my-1 w-full"
-            onClick={() => setIsOpen(true)}
+              className="text-center font-medium text-blue-600 dark:text-blue-500 hover:underline"
+              onClick={() => setIsOpen(true)}
             >
-            ¿No existe el alimento? Agrégalo
+              ¿No existe el alimento? Agrégalo
             </button>
+          </div>
         </div>
       </div>
 
