@@ -4,6 +4,7 @@ import { tiposPorcion } from "./helpers/OpcionesTipoPorcion";
 import Error from "./components/Error";
 import { ListadoAlimentos } from "./components/ListadoAlimentos";
 import { Header } from "./components/Header";
+import ErrorComida from "./components/ErrorComida";
 
 export const MuySaludableAdminApp = () => {
   // Estados para los valores de los campos
@@ -11,11 +12,11 @@ export const MuySaludableAdminApp = () => {
   const [tipoComida, setTipoComida] = useState("");
   const [alimentos, setAlimentos] = useState([]);
   const [alimento, setAlimento] = useState("");
+  const [alimentoString, setAlimentoString] = useState("");
   const [cantidad, setCantidad] = useState("");
   const [error, setError] = useState(false);
+  const [errorComida, setErrorComida] = useState(false);
   const [tipoPorcion, setTipoPorcion] = useState("");
-
-  const [objAlimento, setObjAlimento] = useState({});
   const [listadoAlimentos, setListadoAlimentos] = useState([]);
  
 
@@ -43,11 +44,87 @@ export const MuySaludableAdminApp = () => {
     
   }
 
+  const setValoresAlimentos = (e) => {
+    const selectedOption = e.target.selectedOptions[0];
+      
+    // Obtener el valor y el texto seleccionado
+    const value = selectedOption.value;
+    const text = selectedOption.textContent;
+    
+    setAlimento(value);
+    setAlimentoString(text);
+
+  }
+
   useEffect(() => {
 
     getAlimentos();
 
   }, [])
+
+  const handleSaveComida = () => {
+
+    if ([nombreComida, tipoComida].includes("") || listadoAlimentos.length == 0 ) {
+      setErrorComida(true);
+      return;
+    }
+
+    setErrorComida(false);
+    
+    const arregloAlimentos = buildBodyAlimentos(listadoAlimentos);
+    //Una vez establecidas las condiciones, se procede a guardar la comida
+    const body = {
+        "nombre": nombreComida,
+        "tipo": tipoComida,
+        "alimentos": arregloAlimentos
+    }
+
+    saveComidaCompleta(body);
+
+  }
+
+  const saveComidaCompleta = async (request) =>{
+
+    const url = `http://localhost:8000/api/alimentosComida/crearComida`;
+    try {
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(request),
+      });
+
+      const resp = await response.json();
+      if (response.status == 200) {
+        //Una vez guardada la comida, se limpian los campos
+        setNombreComida("");
+        setTipoComida("");
+        setAlimento("");
+        setAlimentoString("");
+        setCantidad("");
+        setTipoPorcion("");
+        setError(false);
+        setErrorComida(false);
+        setListadoAlimentos([]);
+        alert("La comida se ha guardado correctamente!");
+      }
+    } catch (error) {
+      console.log("Error la comida " + error);
+    }
+
+  }
+
+  const buildBodyAlimentos = ( listaAlimentos ) => {
+
+    return listaAlimentos.map((item) => ({
+      id_alimento: parseInt(item.alimento),
+      cantidad: parseInt(item.cantidad),
+      id_catalogo_porcion_tipos: parseInt(item.tipoPorcion),
+    }));
+
+  }
 
   const handleButtonClick = () => {
 
@@ -63,6 +140,7 @@ export const MuySaludableAdminApp = () => {
     const objetoAlimento= {
         key: generarId(),
         alimento,
+        alimentoString,
         cantidad,
         tipoPorcion,
         tipoPorcionValor
@@ -75,6 +153,7 @@ export const MuySaludableAdminApp = () => {
     setTipoPorcion("");
 
   };
+
 
   const searchValuePorcion = (id, arreglo) =>{
     for (let index = 0; index < arreglo.length; index++) {
@@ -94,9 +173,17 @@ export const MuySaludableAdminApp = () => {
   return (
     <div className="mx-auto">
       <Header />
+
+      {errorComida && (
+        <ErrorComida>
+          Favor de establecer nombre de la comida, tipo de comida y elegir al
+          menos un alimento
+        </ErrorComida>
+      )}
+
       <div className="relative">
         <button
-          onClick={handleButtonClick}
+          onClick={handleSaveComida}
           className="absolute bg-green-900 text-white p-2 rounded-md top-0 right-0 mt-0"
         >
           Guardar
@@ -140,21 +227,25 @@ export const MuySaludableAdminApp = () => {
       {/* Comienza sección para agregar alimentos */}
       <div className="flex mt-8 w-full">
         {/* Primera columna */}
-        <div className="w-2/5 mr-4">
-          <label htmlFor="select1" className="block my-3 font-bold text-lg">
+        <div className="w-2/5 mr-4 overflow-hidden">
+          <label
+            htmlFor="select1"
+            className="block my-3 font-bold text-lg md:overflow-ellipsis"
+          >
             Elige los alimentos que contiene:
           </label>
           <select
             id="select1"
             value={alimento}
-            onChange={(e) => setAlimento(e.target.value)}
+            // onChange={(e) => setAlimento(e.target.value)}
+            onChange={(e) => setValoresAlimentos(e)}
             className="block w-full mt-1 p-3 border rounded-md bg-white"
           >
             <option key="" value="">
               Elige un alimento
             </option>
-            {alimentos.map(({ nombre, tipo }) => (
-              <option key={nombre} value={nombre}>
+            {alimentos.map(({ nombre, id }) => (
+              <option key={nombre} value={id}>
                 {nombre}
               </option>
             ))}
@@ -209,9 +300,7 @@ export const MuySaludableAdminApp = () => {
         </div>
       </div>
 
-      <ModalCrearAlimento 
-        setAlimentos={setAlimentos} 
-        />
+      <ModalCrearAlimento setAlimentos={setAlimentos} />
 
       <ListadoAlimentos
         listadoAlimentos={listadoAlimentos}

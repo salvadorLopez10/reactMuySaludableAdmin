@@ -23,12 +23,12 @@ export const ListadoAlimentos = ({ listadoAlimentos, setListadoAlimentos }) => {
       {listadoAlimentos.length > 0 ? <label className="mt-10">Alimentos elegidos:</label> : <label></label> }
       {/* <label className="mt-10">Alimentos elegidos:</label> */}
       {listadoAlimentos.map(
-        ({ key, alimento, cantidad, tipoPorcion, tipoPorcionValor }) => (
+        ({ key, alimento,alimentoString ,cantidad, tipoPorcion, tipoPorcionValor }) => (
           <div key={key} className="flex mt-1 w-full items-center">
             {/* //Primera columna: alimento elegido */}
             <div className="w-1/3 mr-4">
               <label className="block w-full mt-1 p-2 border rounded-md bg-green-50 font-light">
-                {alimento}
+                {alimentoString}
               </label>
             </div>
 
