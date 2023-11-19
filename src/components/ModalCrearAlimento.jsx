@@ -53,6 +53,7 @@ export const ModalCrearAlimento = ({ setAlimentos }) => {
         setIsOpen(false);
         setErrorAPI(false);
         setErrorAlimento(false);
+        alert("El alimento se ha agregado correctamente");
       }
     } catch (error) {
       console.log("Error al guardar alimento: " + error);
