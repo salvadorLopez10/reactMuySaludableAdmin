@@ -1,5 +1,6 @@
+import config from "../config.json";
 export const getAlimentos = async () => {
-  const url = `http://localhost:8000/api/alimentos`;
+  const url = `${config.URL_API}/api/alimentos`;
   try {
     const resp = await fetch(url);
 
@@ -15,7 +16,6 @@ export const getAlimentos = async () => {
     });
 
     return alimentos;
-    
   } catch (error) {
     console.log(error);
   }

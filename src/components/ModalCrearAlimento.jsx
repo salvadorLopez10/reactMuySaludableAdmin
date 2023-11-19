@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import config from "../config.json";
 import { ErrorModalAlimento } from './ErrorModalAlimento';
 import { getAlimentos } from '../helpers/GetAlimentosAPI';
 
@@ -23,7 +24,7 @@ export const ModalCrearAlimento = ({ setAlimentos }) => {
   };
 
   const saveAlimento = async () => {
-    const url = `http://localhost:8000/api/alimentos`;
+    const url = `${config.URL_API}/api/alimentos`;
     try {
       const body = {
         nombre: nombreAlimento,

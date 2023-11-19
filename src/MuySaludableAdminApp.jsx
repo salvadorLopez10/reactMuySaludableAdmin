@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import config from './config.json';
 import { ModalCrearAlimento } from "./components/ModalCrearAlimento";
 import { tiposPorcion } from "./helpers/OpcionesTipoPorcion";
 import Error from "./components/Error";
@@ -21,7 +22,7 @@ export const MuySaludableAdminApp = () => {
  
 
   const getAlimentos = async() => {
-    const url = `http://localhost:8000/api/alimentos`;
+    const url = `${config.URL_API}/api/alimentos`;
     try {
         const resp = await fetch(url);
 
@@ -85,7 +86,7 @@ export const MuySaludableAdminApp = () => {
 
   const saveComidaCompleta = async (request) =>{
 
-    const url = `http://localhost:8000/api/alimentosComida/crearComida`;
+    const url = `${config.URL_API}/api/alimentosComida/crearComida`;
     try {
 
       const response = await fetch(url, {
