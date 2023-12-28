@@ -133,6 +133,7 @@ export const ModalCrearAlimento = ({ setAlimentos }) => {
                 <option value="Verduras">Verduras</option>
                 <option value="Grasas">Grasas</option>
                 <option value="BebidasLacteos">Bebidas y Lácteos</option>
+                <option value="Otros">Otros</option>
               </select>
             </div>
 

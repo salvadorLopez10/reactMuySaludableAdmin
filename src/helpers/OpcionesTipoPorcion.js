@@ -6,4 +6,5 @@ export const tiposPorcion = [
     { id: "5", value: "Cucharadas" },
     { id: "6", value: "Latas" },
     { id: "7", value: "Paquetes" },
+    { id: "8", value: "Mililitros" },
   ];
